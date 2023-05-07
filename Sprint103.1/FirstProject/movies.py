@@ -6,7 +6,7 @@ def list_movies():
         print(f'{i}. {key}: {val}')
         i +=1
     else:
-        print(f'{key} is not avialable in the movie database collection')
+        print('Movie is not available in the movie database collection')
 
 
 def add_movies():
