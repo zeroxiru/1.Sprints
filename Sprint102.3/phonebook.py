@@ -1,5 +1,3 @@
-import sys
-
 
 def add_a_contact():
     name = input("Enter the name of the contact:")
@@ -13,23 +11,19 @@ def add_a_contact():
     else:
         print("Invalid contact number. Contact number  is not added.")
 
-    if phone_book != {}:
-        i = 1
-        for key, value in phone_book.items():
-            print(f"{i}. {key}: {value} ")
-            i += 1
-    else:
-        print("The contact number is not available in the phone book.")
+
 
 def remove_contact():
-    phone_name =input("Enter the contact name to delete from the phone book contact.")
-    if phone_name in phone_book:
-        print(f"{phone_name} = {phone_book[phone_name]}")
-    else:
-        print(f'{phone_name} was not found in the phone book contact')
+    contact_name =input("Enter the contact name to delete from the phone book contact.")
+    if contact_name in phone_book:
+        print(f"{contact_name} = {phone_book[contact_name]}")
         ask = input("Do you want to delete the contact Y/N")
         if "Y" in ask.upper():
-            del phone_book[phone_name]
+            del phone_book[contact_name]
+            print(f"{contact_name} is deleted from the phone book contact list")
+    else:
+        print(f'{contact_name} was not found in the phone book contact')
+
 
 def search_contact(phone_book):
     contact_name = input("Enter the contact name to search from the phone book contact:")
@@ -43,6 +37,17 @@ def search_contact(phone_book):
             found = True
     if not found:
         print(f"No contact found for the name: {contact_name}")
+
+
+def view_the_contact():
+    print("The contact list of the phone book are following. ")
+    if phone_book != {}:
+       i = 1
+       for key, value in phone_book.items():
+        print(f"{i}. {key}: {value} ")
+        i += 1
+    else:
+        print("The contact number is not available in the phone book.")
 
 
 
@@ -86,8 +91,8 @@ Enter your choices from(1 to 5) for perform your task:
                remove_contact()
           elif command == 3:
                search_contact(phone_book)
-          # elif command == 4:
-          #     view_the_contact()
+          elif command == 4:
+              view_the_contact()
           elif command == 5:
               print("Goodbye!")
               break

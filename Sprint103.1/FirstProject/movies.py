@@ -1,4 +1,5 @@
 from statistics import median
+import random
 def list_movies():
     if movies != {}:
       i =1
@@ -43,6 +44,28 @@ def update_movies():
      else:
           print(f"{movie} was not not found in the movie database")
 
+def show_stats():
+    ratings = list(movies.values())
+    if ratings:
+        average = sum(ratings) / len(ratings)
+        median_raiting = median(ratings)
+        best_movie = max(movies, key=movies.get)
+        worst_movie = min(movies, key=movies.get)
+
+        print(f"Average rating: {average:.2f}")
+        print(f"Median rating: {median_raiting:.2f}")
+        print(f"Best movie: {best_movie} ({movies[best_movie]:.2f})")
+        print(f"Worst movie: {worst_movie} ({movies[worst_movie]:.2f})")
+    else:
+        print("No movies available in the movie database.")
+
+def random_movie():
+    if movies:
+        rand_movie =random.choice(list(movies.keys()))
+        rand_rating = movies[rand_movie]
+        print(f"Random Movie:{rand_movie} \t {rand_rating}")
+    else:
+        print("No movies available in the movie database.")
 
 
 def main():
@@ -73,11 +96,11 @@ Enter choice (1-9): \ '''
           elif command == 5:
               show_stats()
           elif command == 6:
-              Random_movie()
-          elif  command == 7:
-              search_movie()
-          elif command == 8:
-              sorted_by_rating()
+              random_movie()
+          # elif  command == 7:
+          #     search_movie()
+          # elif command == 8:
+          #     sorted_by_rating()
           elif command == 9:
               break
       else:
@@ -98,4 +121,4 @@ if __name__ == "__main__":
        "Forrest Gump": 8.8,
        "Star Wars: Episode V": 8.7
    }
-   main()
+main()
