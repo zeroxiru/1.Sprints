@@ -1,5 +1,6 @@
 from statistics import median
 import random
+import matplotlib.pyplot as plt
 def list_movies():
     if movies != {}:
       i =1
@@ -27,6 +28,7 @@ def delete_movies():
       ask = input("Do you want to delete the movie Y/N")
       if "Y" in ask.upper():
           del movies[movie]
+          print(f"{movie} is deleted from the movie db.")
 
 def update_movies():
      movie = input("Type the movie name to update:")
@@ -67,6 +69,48 @@ def random_movie():
     else:
         print("No movies available in the movie database.")
 
+def search_movie():
+    movie_name = input("Enter the movie name to search from the movie database: ")
+    name_lower = movie_name.lower()
+
+    found = False
+    for movie_name, movie_rating in movies.items():
+        if name_lower in movie_name.lower():
+            print(f"The name of the movie for {movie_name} is: {movie_rating}")
+            found = True
+    if not found:
+      print(f"No movie has found for the name: {movie_name}")
+
+def sorted_by_rating():
+    movies_sorted_by_rating = sorted(movies.items(), key=lambda item: item[1], reverse=True)
+
+    if movies_sorted_by_rating:
+        print("Movies sorted by rating: ")
+        for movies_name, movies_rating in movies_sorted_by_rating:
+           print(f"{movies_name}: {movies_rating}")
+    else:
+        print("No movies available in the movie database.")
+
+
+def create_rating_histogram():
+    ratings = list(movies.values())
+    if ratings:
+        plt.hist(ratings, bins=10, edgecolor='black')
+        plt.xlabel('Rating')
+        plt.ylabel('Frequency')
+        plt.title('Rating Histogram')
+        file_name = input("Enter the file name to save the histogram (e.g., histogram.png): ")
+        plt.savefig(file_name)
+        plt.close()
+        print(f"Histogram saved to {file_name}")
+    else:
+        print("No movies available in the movie database.")
+
+
+
+
+
+
 
 def main():
    menu = '''
@@ -80,11 +124,12 @@ Menu:
 6. Random movie
 7. Search movie
 8. Movies sorted by rating
+9. Creating a rating histogram
 
-Enter choice (1-9): \ '''
+Enter choice (1-10): \ '''
    while True:
-      command = int(input(f"{menu} Choose between 1 to 9: "))
-      if 0 < command < 10:
+      command = int(input(f"{menu} Choose between 1 to 10: "))
+      if 0 < command < 11:
           if command ==1:
               list_movies()
           elif  command == 2:
@@ -97,11 +142,13 @@ Enter choice (1-9): \ '''
               show_stats()
           elif command == 6:
               random_movie()
-          # elif  command == 7:
-          #     search_movie()
-          # elif command == 8:
-          #     sorted_by_rating()
+          elif  command == 7:
+              search_movie()
+          elif command == 8:
+              sorted_by_rating()
           elif command == 9:
+              create_rating_histogram()
+          elif command == 10:
               break
       else:
           print("Choose between 1 to 9")
