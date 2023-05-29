@@ -20,6 +20,16 @@
 #
 # if __name__ == "__main__":
 #     main()
+
+def is_prime(number):
+    x = 2
+    while x < number:
+       if number % 2 == 0:
+           return False
+       x += 1
+    return True
+
+
 def is_sum_of_two_primes(number):
     """
     Check if a number can be expressed as the sum of two prime numbers.
