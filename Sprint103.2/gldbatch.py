@@ -1,7 +1,6 @@
-
 def is_prime(number):
     """
-    verify if a number is prime.
+    Verify if a number is prime.
 
     Args:
         number (int): The number to check.
@@ -9,44 +8,40 @@ def is_prime(number):
     Returns:
         bool: True if the number is prime, False otherwise.
     """
-    if number < 2:
-        return False
-    for i in range(2, int(number ** 0.5) + 1):
-        if number % i == 0:
+    x = 2
+    while x < number:
+        if number % 2 == 0:
             return False
-        return True
+        x += 1
+    return True
+
 
 def is_sum_of_two_primes(number):
     """
-    check if the number is sum of two prime numbers.
+    Check if a number can be expressed as the sum of two prime numbers.
+
     Args:
-        number(int): checking the interger number.
+        number (int): The number to check.
+
     Returns:
-        bool: it returns true if the sum of two prime numbers equivalent to
-        the given number. Otherwise False
+        bool: True if the number can be expressed as the sum of two prime numbers, False otherwise.
     """
     if number % 2 == 1:
         return False
-    prime_pairs = set()
-    for i in range(2, number):
 
-         if is_prime(i):
-           # checking the second number j is prime or not.
+    for i in range(2, number // 2 + 1):
+        if is_prime(i):
             j = number - i
-
-            if j >= i and is_prime(j):
-                prime_pairs.add((i, j))
-
-    for pair in prime_pairs:
-        print(f"The number {number} equals the sum of {pair[0]} and {pair[1]}")
-
-
+            if j >= 2 and is_prime(j) and i + j == number:
+                print(f"The number {number} equals the sum of {i} and {j}")
 
     return True
 
 
-given_number = 10
-
-is_sum_of_two_primes(given_number)
-
-
+while True:
+    try:
+        Number = int(input("Enter a number: "))
+        is_sum_of_two_primes(Number)
+        break
+    except ValueError:
+        print("Invalid input! Please enter an integer.")
