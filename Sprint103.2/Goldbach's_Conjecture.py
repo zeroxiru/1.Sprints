@@ -1,32 +1,49 @@
-def is_sum_0f_two_primes(number):
-    if number % 2 == 1:
-        return False
-    for i in range(2, number):
-        is_a_prime = True
-    # check if i is a prime
-        x = 2
-        while x < i:
-            if i % x == 0:
-                is_a_prime = False
-            x += 1
-        if is_a_prime:
-      # i is a prime, now check if j=x-i is prime
-            j = number-i
-
-            if j >= 2:
-
-        #j must be greater or equal 2 to be prime
-                good2 = True
-        x = 2
-        while x < j:
-            if j % x == 0:
-                good2= False
-
-        x += 1
-        if good2:
-          print(f"The number {number} equals to the sum of {i} and {j}")
-    return True
+import openpyxl
+import tkinter as tk
+from tkinter import filedialog, messagebox
 
 
-given_number = int(input("Enter a number:"))
-is_sum_0f_two_primes(given_number)
+def detect_formula_errors():
+    # Open file dialog to select Excel file
+    filepath = filedialog.askopenfilename(title="Select Excel file", filetypes=[("Excel files", "*.xlsx")])
+
+    try:
+        # Load the workbook
+        workbook = openpyxl.load_workbook(filepath)
+
+        # Get the active sheet
+        sheet = workbook.active
+
+        # Iterate over each cell in the sheet
+        for row in sheet.iter_rows():
+            for cell in row:
+                # Check if the cell contains a formula
+                if cell.data_type == 'f':
+                    formula = cell.value
+
+                    # Try evaluating the formula
+                    try:
+                        eval(formula)
+                    except Exception as e:
+                        # Display error message for invalid formula
+                        messagebox.showerror("Formula Error", f"Invalid formula in cell {cell.coordinate}: {str(e)}")
+
+        # Close the workbook
+        workbook.close()
+
+        messagebox.showinfo("Formula Check", "Formula check completed. No errors found.")
+
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {str(e)}")
+
+
+# Create the GUI window
+window = tk.Tk()
+window.title("Excel Formula Error Detector")
+
+# Create a button to trigger the formula error detection
+button = tk.Button(window, text="Detect Formula Errors", command=detect_formula_errors)
+button.pack(pady=10)
+
+# Run the GUI event loop
+window.mainloop()

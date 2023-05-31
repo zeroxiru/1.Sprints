@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 import requests
+import pytest
 
 def get_astronomy_photo_coding_exercise_2(url):
     """
@@ -22,7 +23,7 @@ class APITestCase(unittest.TestCase):
         mock_get.return_value.status_code = 200
 
         # Call the function with a valid URL
-        result = get_astronomy_photo_coding_exercise_2('https://api.example.com/apod')
+        result = get_astronomy_photo_coding_exercise_2("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
 
         # Assert that the function returns a response object
         self.assertIsInstance(result, requests.Response)
@@ -33,7 +34,7 @@ class APITestCase(unittest.TestCase):
         mock_get.return_value.status_code = 401
 
         # Call the function with an invalid API key
-        result = get_astronomy_photo_coding_exercise_2('https://api.example.com/apod?api_key=INVALID_KEY')
+        result = get_astronomy_photo_coding_exercise_2("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
 
         # Assert that the function returns the HTTP error response
         self.assertIsInstance(result, requests.Response)
@@ -45,7 +46,7 @@ class APITestCase(unittest.TestCase):
         mock_get.return_value.status_code = 404
 
         # Call the function with a URL that returns a 404 error
-        result = get_astronomy_photo_coding_exercise_2('https://api.example.com/apod')
+        result = get_astronomy_photo_coding_exercise_2("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
 
         # Assert that the function returns the HTTP error response
         self.assertIsInstance(result, requests.Response)
