@@ -1,5 +1,6 @@
 import unittest
 import parse_classroom
+import parse_classrom_with_reaadlines
 
 
 class TestReadFile(unittest.TestCase):
@@ -11,7 +12,8 @@ class TestReadFile(unittest.TestCase):
                     {'name': 'Daniel', 'country': 'United States', 'grades': [100, 99, 77]}]
 
         # Get the actual return value of the student's function
-        actual = parse_classroom.parse_simple_classroom(parse_classroom.SIMPLE_CLASSROOM_PATH)
+        #actual = parse_classroom.parse_simple_classroom(parse_classroom.SIMPLE_CLASSROOM_PATH)
+        actual = parse_classrom_with_reaadlines.parse_simple_classroom(parse_classroom.SIMPLE_CLASSROOM_PATH)
 
         # Check that it equal
         self.assertEqual(actual, expected)
