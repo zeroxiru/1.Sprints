@@ -6,9 +6,19 @@ def print_help():
     print("help - Print the list of the available commands")
     print(" show_countries - prints the all countries of the ships, without duplicates")
     print(" top_countries <num_countries> - Prints a list of top countries with the most ships")
+    print(" mini_tasks  - Prints the list of mini task like - name, number, countries of ships from the ships data")
 
 
 def print_countries(data):
+    """
+     Prints a list of unique countries from the ship data.
+
+     Args:
+         data (dict): The ship data dictionary.
+
+     Returns:
+         None
+     """
     ships = data["data"]
     ship_countries = [ship["COUNTRY"] for ship in ships]
     unique_countries = sorted(set(ship_countries))
@@ -17,6 +27,16 @@ def print_countries(data):
         print(country)
 
 def print_top_countries(data, num_of_top_countries):
+    """
+      Prints a list of the top countries with the most ships.
+
+      Args:
+          data (dict): The ship data dictionary.
+          num_of_top_countries (int): The number of top countries to print.
+
+      Returns:
+          None
+      """
     # data: the list of ship data contains in the data dictionary
     # num_of_top_countries  which will return the top number of countries.
 
@@ -46,8 +66,16 @@ def print_top_countries(data, num_of_top_countries):
         print(f"{country}: {count} ships")
 
 
-
 def mini_tasks_of_ship_details(data):
+    """
+      Performs mini tasks related to ship details using the provided ship data.
+
+      Args:
+          data (dict): The ship data dictionary.
+
+      Returns:
+          None
+      """
     ships = data["data"]
     total_ships = len(ships)
     print(f"Total number of ships are {total_ships}")
@@ -67,10 +95,12 @@ def mini_tasks_of_ship_details(data):
     for country in unique_countries:
         print(country)
 
+
 def main():
 
     parser = argparse.ArgumentParser(description="Ship data command line")
-    parser.add_argument("command", help="command to execute", choices=["help", "show_countries", "top_countries", "mini_tasks"])
+    parser.add_argument("command", help="command to execute", choices=["help", "show_countries",
+                                                                       "top_countries", "mini_tasks"])
     parser.add_argument("args", nargs="*", help="additional argument for the command")
     args = parser.parse_args()
 
