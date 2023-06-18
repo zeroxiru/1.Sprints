@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 birthday = "28/06/1989"
 
-days = 182
+days = 182.5
 
 delta = timedelta(days=days)
 
