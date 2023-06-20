@@ -45,4 +45,21 @@ def show_photos():
     Make sure you only include the "image" media_type. We want to exclude videos for now.
     Print each photo_url to the console before the return statement.
     """
-    pass
+    connection = APODConnection()
+    response = connection.fetch_photo_data()
+
+    photos = []
+    for item in response:
+        if item["media_type"] == "image":
+            photo = AstronomyPhoto()
+            photo.photo_url = item["url"]
+            photo.date = item["date"]
+            photo.title = item["title"]
+            photos.append(photo)
+            print(photo.photo_url)
+
+    return photos
+
+
+if __name__ == '__main__':
+    show_photos()

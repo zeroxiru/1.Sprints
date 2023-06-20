@@ -1,0 +1,36 @@
+<!-- This is a simple HTML file that displays the NASA photos.
+Modify it to add the photo title, photo date, and/or other info
+returned by the NASA API. Use your creativity!
+
+You can change/add HTML elements or even add some CSS styling.
+
+If you completed Bonus #1 for nasa-oop.py, make sure you add the new
+data to the HTML below (remember to use Jinja2 templating).
+
+Bonus #1: Use CSS to display 2 or 3 images per row, to form a grid of images. -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>NASA Astronoy Photos</title>
+  </head>
+
+  <body>
+    <main>
+        <h1>Nasa Astronomy Photos</h1>
+
+        {% for photo_object in photo_objects %}
+        <div>
+            <img src={{ photo_object.photo_url }}>
+        </div>
+        {% endfor %}
+    </main>
+  </body>
+
+  </html>
