@@ -1,6 +1,6 @@
 import requests
 
-REQUEST_URL = "https://sallysbakingaddiction.com/?q="
+REQUEST_URL = "https://sallysbakingaddiction.com/?s="
 OUTPUT_FILE = "output_file.html"
 
 def saving_the_output_file(text, filename):
@@ -8,7 +8,7 @@ def saving_the_output_file(text, filename):
         fileobj.write(text)
 
 def main():
-    search_param = input("please enter the desert name: ")
+    search_param = input("please enter the desert name:")
     url = REQUEST_URL + search_param
     response = requests.get(url)
     saving_the_output_file(response.text, OUTPUT_FILE)
