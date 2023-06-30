@@ -1,6 +1,6 @@
 import requests
 
-REQUEST_URL = "https://sallysbakingaddiction.com/?s="
+REQUEST_URL = "https://sallysbakingaddiction.com/?q="
 OUTPUT_FILE = "output_file.html"
 
 def saving_the_output_file(text, filename):
