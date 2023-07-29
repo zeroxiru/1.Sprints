@@ -1,99 +1,195 @@
 from statistics import median
 import random
 import matplotlib.pyplot as plt
+import json
+
+
+movies_data = None
+def load_movies_data(file_path):
+    """
+       Loads the JSON data from a file.
+
+       Args:
+           file_path (str): The path to the JSON file.
+
+       Returns:
+           dict: The loaded JSON data as a dictionary of dictionaries.
+       """
+    with open(file_path, "r") as file_obj:
+        return json.load(file_obj)
+
+def save_data(data, file_path):
+    """
+    Saves the data to a JSON file.
+
+    Args:
+        data (dict): The data to be saved (dictionary of dictionaries).
+        file_path (str): The path to the JSON file.
+    """
+    with open(file_path, 'w') as file_obj:
+        json.dump(data, file_obj, indent=4)
+
 def list_movies():
-    if movies != {}:
-      i =1
-      for key, val in movies.items():
-        print(f'{i}. {key}: {val}')
-        i += 1
+    """
+    Returns a dictionary of dictionaries that
+    contains the movies information in the database.
+
+    The function loads the information from the JSON
+    file and returns the data.
+
+    For example, the function may return:
+    {
+      "Titanic": {
+        "rating": 9,
+        "year": 1999
+      },
+      "..." {
+        ...
+      },
+    }
+    """
+
+    if movies_data:
+        print("List of Movies:")
+        for movie_title, movie_info in movies_data.items():
+            print(f"{movie_title}:")
+            print(f"  Rating: {movie_info['rating']}")
+            print(f"  Year: {movie_info['year']}")
     else:
-        print('Movie is not available in the movie database collection')
+        print("No movies available in the database.")
+
+def show_single_movie_info(title):
+
+    if title in movies_data:
+        movie_info = movies_data[title]
+        print(f"{title}:")
+        print(f"  Rating: {movie_info['rating']}")
+        print(f"  Year: {movie_info['year']}")
+    else:
+        print(f"{title} was not found in the movie database.")
 
 
-def add_movies():
-     movie = input("Insert a name of the movie into the list:")
-     rating = float(input(" Provide a rating for the given movie:"))
-     if not movie in movies:
-       movies[movie] = rating
-     else:
-       movies[movie] += rating
 
-def delete_movies():
-      movie = input("Type the movie name to delete from the database:")
-      if  movie in movies:
-          print(f"{movie} = {movies[movie]}")
-      else:
-          print(f'{movie} was not found in the movie database')
-      ask = input("Do you want to delete the movie Y/N")
-      if "Y" in ask.upper():
-          del movies[movie]
-          print(f"{movie} is deleted from the movie db.")
+def add_movie(title, year, rating):
+    """
+    Adds a movie to the movies database.
+    Loads the information from the JSON file, add the movie,
+    and saves it. The function doesn't need to validate the input.
+    """
+    movie_title = title
+    movie_year = year
+    movie_rating = rating
 
-def update_movies():
-     movie = input("Type the movie name to update:")
-     if movie in movies:
-         print(f"{movie} = {movies[movie]}")
-         ask = input("Do you want to update the movie Y/N")
-         if "Y" in ask.upper():
-          #new_movie_name = input("Update the name of the movie into the list:")
-          new_rating = float(input("Enter the new rating for the movie: "))
-          movies[movie] = new_rating
-          #del movies[movie]
-          print(f"{movie} has been added to the database with a rating of {new_rating} ")
-         else:
-             print(f"{movie} has not been updated.")
-     else:
-          print(f"{movie} was not not found in the movie database")
+    if (movie_title, movie_rating, movie_year) not in movies_data.values():
+        movies_data[movie_title] = {
+        "year": movie_year,
+        "rating": movie_rating
+        }
+        save_data(movies_data, "movies_list.json")
+        print(f"{movie_title} added to the movies database.")
+    else:
+        print(
+        f"A movie with title: {movie_title}, rating: {movie_rating}, and year: " \
+        f"{movie_year} already exists in the movies database.")
+
+
+def delete_movie(title_of_movie):
+    """
+    Deletes a movie from the movies database.
+    Loads the information from the JSON file, deletes the movie,
+    and saves it. The function doesn't need to validate the input.
+    """
+    movie = title_of_movie
+    if movie in movies_data:
+        print(f"{movie} = {movies_data[movie]}")
+        confirm = input(f"Do you want to delete {movie} from the movie database? (Y/N): ")
+        if "Y" in confirm.upper():
+            del movies_data[movie]
+            save_data(movies_data, "movies_list.json")
+            print(f"{movie} is deleted from the movie db.")
+        else:
+            print(f"{movie} was not deleted.")
+    else:
+        print(f'{movie} was not found in the movie database')
+
+
+
+
+def update_movie(title, rating):
+    """
+    Updates a movie from the movies database.
+    Loads the information from the JSON file, updates the movie,
+    and saves it. The function doesn't need to validate the input.
+    """
+
+    if title in movies_data:
+        movies_data[title]["rating"] = rating
+        save_data(movies_data, 'movies_list.json')
+        print(f"{title} updated with rating {rating}.")
+    else:
+        print(f"{title} was not found in the movie database.")
+
 
 def show_stats():
-    ratings = list(movies.values())
+    '''
+    It calculates the movies average, median, best and worst rating
+    by using statistics library and print the movies from the movie database.
+
+    If there are no movies in the database, it prints a message indicating that
+    there are no movies available.
+    '''
+    ratings = [movie_info["rating"] for movie_info in movies_data.values()]
     if ratings:
         average = sum(ratings) / len(ratings)
         median_raiting = median(ratings)
-        best_movie = max(movies, key=movies.get)
-        worst_movie = min(movies, key=movies.get)
+        best_movie = max(movies_data, key=lambda title: movies_data[title]["rating"])
+        worst_movie = min(movies_data, key=lambda title: movies_data[title]["rating"])
+
 
         print(f"Average rating: {average:.2f}")
         print(f"Median rating: {median_raiting:.2f}")
-        print(f"Best movie: {best_movie} ({movies[best_movie]:.2f})")
-        print(f"Worst movie: {worst_movie} ({movies[worst_movie]:.2f})")
+        print(f"Best movie: {best_movie} ({movies_data[best_movie]['rating']:.2f})")
+        print(f"Worst movie: {worst_movie} ({movies_data[worst_movie]['rating']:.2f})")
     else:
         print("No movies available in the movie database.")
 
 def random_movie():
-    if movies:
-        rand_movie =random.choice(list(movies.keys()))
-        rand_rating = movies[rand_movie]
-        print(f"Random Movie:{rand_movie} \t {rand_rating}")
+    """
+    It shows the random movies from the movie db.
+    """
+    if movies_data:
+        rand_movie = random.choice(list(movies_data.keys()))
+        rand_rating = movies_data[rand_movie]['rating']
+        print(f'Randomd Movie: {rand_movie}\tRating:{rand_rating}')
     else:
         print("No movies available in the movie database.")
 
-def search_movie():
-    movie_name = input("Enter the movie name to search from the movie database: ")
-    name_lower = movie_name.lower()
 
+def search_movie(title_movie):
+    name_lower = title_movie.lower()
     found = False
-    for movie_name, movie_rating in movies.items():
-        if name_lower in movie_name.lower():
-            print(f"The name of the movie for {movie_name} is: {movie_rating}")
+    for title_movie, movie_info in movies_data.items():
+        if name_lower in title_movie.lower():
+            print(f"The name of the movie \"{title_movie}\" is: {movie_info['rating']} "
+                  f"(Rating), {movie_info['year']} (Year)")
+
             found = True
     if not found:
-      print(f"No movie has found for the name: {movie_name}")
+      print(f"No movie has found for the name: {title_movie}")
 
 def sorted_by_rating():
-    movies_sorted_by_rating = sorted(movies.items(), key=lambda item: item[1], reverse=True)
-
+    movies_sorted_by_rating = sorted(movies_data.items(), key=lambda item: item[1]['rating'], reverse=True)
     if movies_sorted_by_rating:
-        print("Movies sorted by rating: ")
-        for movies_name, movies_rating in movies_sorted_by_rating:
-           print(f"{movies_name}: {movies_rating}")
+        print("Movies sorted by rating:")
+        for movie_name, movie_info in movies_sorted_by_rating:
+            print(f"The name of the movie \"{movie_name}\" is: {movie_info['rating']}"
+                  f"(Rating), {movie_info['year']} (Year)")
     else:
         print("No movies available in the movie database.")
 
-
 def create_rating_histogram():
-    ratings = list(movies.values())
+    movies_data = load_movies_data("movies_list.json")
+    ratings = [movie_info['rating'] for movie_info in movies_data.values()]
     if ratings:
         plt.hist(ratings, bins=10, edgecolor='black')
         plt.xlabel('Rating')
@@ -110,10 +206,10 @@ def create_rating_histogram():
 
 
 
-
-
 def main():
-   menu = '''
+    global movies_data
+    movies_data = load_movies_data("movies_list.json")
+    menu = '''
    ************ My Movies Databases ************
 Menu: 
 0. Exit  
@@ -128,24 +224,36 @@ Menu:
 9. Creating a rating histogram
 
 
-Enter choice (0-9): \ '''
-   while True:
+Enter choice (0-9):  '''
+    while True:
       command = int(input(f"{menu} Choose between 0 to 9: "))
       if 0 <= command <= 9:
           if command ==1:
               list_movies()
           elif  command == 2:
-              add_movies()
+              # Get movie details from the user
+              movie_title = input("Insert a name of the movie into the list:")
+              movie_rating = float(input(" Provide a rating for the given movie:"))
+              movie_year = int(input("Enter the year of the movie: "))
+              add_movie(movie_title, movie_year, movie_rating )
+
           elif command == 3:
-              delete_movies()
+              # Get movies name from the title given by user input
+              movie = input("Type the movie name to delete from the database:")
+              delete_movie(movie)
           elif command == 4:
-               update_movies()
+              # Get movie details from the user
+              movie_title = input("Name of the movie into the list to update:")
+              show_single_movie_info(movie_title)
+              movie_rating = float(input(" Provide a new rating for the given movie:"))
+              update_movie(movie_title, movie_rating)
           elif command == 5:
               show_stats()
           elif command == 6:
               random_movie()
           elif  command == 7:
-              search_movie()
+              movie_name = input("Enter the movie name to search from the movie database: ")
+              search_movie(movie_name)
           elif command == 8:
               sorted_by_rating()
           elif command == 9:
@@ -160,16 +268,4 @@ Enter choice (0-9): \ '''
 
 
 if __name__ == "__main__":
-   movies = {
-       "The Shawshank Redemption": 9.5,
-       "Pulp Fiction": 8.8,
-       "The Room": 3.6,
-       "The Godfather": 9.2,
-       "The Godfather: Part II": 9.0,
-       "The Dark Knight": 9.0,
-       "12 Angry Men": 8.9,
-       "Everything Everywhere All At Once": 8.9,
-       "Forrest Gump": 8.8,
-       "Star Wars: Episode V": 8.7
-   }
-main()
+  main()
