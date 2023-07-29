@@ -1,29 +1,4 @@
-import requests
-import json
-
-
-def load_data():
-    """
-    Loads the JSON animal data from a file.
-
-    Args:dd
-        file_path (str): The path to the JSON file.
-
-    Returns:
-        list: The loaded JSON data as a list of dictionaries.
-    """
-#     # with open(file_path, 'r') as file_obj:
-#     #     return json.load(file_obj)
-
-    name = input("Enter the animal name for search: ")
-    api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(name)
-    response = requests.get(api_url, headers={'X-Api-Key': 'q8961PVDHmB2hxiC0G4dOQ==UAQBZam6HY1bGvw1'})
-    if response.status_code == requests.codes.ok:
-        return response.json()
-    elif response.status_code == 404:
-        print("Animal not found.")
-    else:
-        print("Error:", response.status_code, response.json())
+import data_fetcher
 
 
 def get_animal_step1_data(data):
@@ -159,40 +134,43 @@ def print_with_serialization(animals_data):
     return output_serl
 
 
+
 def main():
-    """
-    The main entry point of the program.
+    search_name = input("Enter the animal name for search: ")
+    data = data_fetcher.fetch_data(search_name)
+    if data:
 
-    Loads the animal data, calls the 'get_animal_step1_data' and 'print_with_serialization' methods,
-    and generates two HTML files with the corresponding outputs.
-
-    Args:
-        None
-
-    Returns:
-        None
-    """
-    animal_data = load_data()
-    if animal_data:
-        print(animal_data)
-
+        print(data)
     # Generate HTML file for get_animal_step1_data
-    output_step1 = get_animal_step1_data(animal_data)
-    #print(output_step1)
-    html_template_step1 = reading_html_template_file("animals_template.html")
-    html_output_step1 = html_template_step1.replace('__REPLACE_ANIMALS_INFO__', output_step1)
-    with open('animals.html', 'w') as fileobj_step1:
-         fileobj_step1.write(html_output_step1)
-    print("animals.html file has been created.")
+        output_step1 = get_animal_step1_data(data)
+    # print(output_step1)
+        html_template_step1 = reading_html_template_file("animals_template.html")
+        html_output_step1 = html_template_step1.replace('__REPLACE_ANIMALS_INFO__', output_step1)
+        with open('animals.html', 'w') as fileobj_step1:
+            fileobj_step1.write(html_output_step1)
+        print("animals.html file has been created.")
 
     # # Generate HTML file for print_with_serialization
-    output_serialization = print_with_serialization(animal_data)
-    html_template_serialization = reading_html_template_file("animals_template.html")
-    html_output_serialization = html_template_serialization.replace('__REPLACE_ANIMALS_INFO__', output_serialization)
-    with open('animals_serialization.html', 'w') as fileobj_serialization:
-        fileobj_serialization.write(html_output_serialization)
-    print("animals_serialization.html file has been created.")
+        output_serialization = print_with_serialization(data)
+        html_template_serialization = reading_html_template_file("animals_template.html")
+        html_output_serialization = html_template_serialization.replace('__REPLACE_ANIMALS_INFO__', output_serialization)
+        with open('animals_serialization.html', 'w') as fileobj_serialization:
+            fileobj_serialization.write(html_output_serialization)
+        print("animals_serialization.html file has been created.")
+    else:
+
+        # Error message for  non-existent animal
+        # print("Animal data not found or error occurred.")
+        error_message = f'<h2>The animal "{search_name}" doesn\'t exist.</h2>'
+        html_error_message = reading_html_template_file('animals_template.html')
+        html_output_error = html_error_message.replace('__REPLACE_ANIMALS_INFO__', error_message)
+        with open('animals_error.html', 'w') as fileobj_error:
+            fileobj_error.write(html_output_error)
+        print("animals_error.html file has been created.")
 
 
-if __name__ == "__main__":
+
+
+
+if __name__ =="__main__":
     main()

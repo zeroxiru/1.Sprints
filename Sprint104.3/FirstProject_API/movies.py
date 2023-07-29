@@ -6,7 +6,7 @@ def list_movies():
       i =1
       for key, val in movies.items():
         print(f'{i}. {key}: {val}')
-        i +=1
+        i += 1
     else:
         print('Movie is not available in the movie database collection')
 
@@ -115,7 +115,8 @@ def create_rating_histogram():
 def main():
    menu = '''
    ************ My Movies Databases ************
-Menu:   
+Menu: 
+0. Exit  
 1. List movies
 2. Add movie
 3. Delete movie
@@ -126,10 +127,11 @@ Menu:
 8. Movies sorted by rating
 9. Creating a rating histogram
 
-Enter choice (1-10): \ '''
+
+Enter choice (0-9): \ '''
    while True:
-      command = int(input(f"{menu} Choose between 1 to 10: "))
-      if 0 < command < 11:
+      command = int(input(f"{menu} Choose between 0 to 9: "))
+      if 0 <= command <= 9:
           if command ==1:
               list_movies()
           elif  command == 2:
@@ -148,8 +150,10 @@ Enter choice (1-10): \ '''
               sorted_by_rating()
           elif command == 9:
               create_rating_histogram()
-          elif command == 10:
+          elif command == 0:
+              print("Bye!!!")
               break
+
       else:
           print("Choose between 1 to 9")
           continue
