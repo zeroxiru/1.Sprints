@@ -124,8 +124,12 @@ class Game():
         """
         Play the full game.
         """
+    def __init__(self):
+
+        self.rounds = 3
+
         print("Game Start")
-        for round in range(3):
+        for round in range(rounds):
             print(f"Round {round +1}")
             self.play_round()
 
@@ -140,31 +144,31 @@ class Game():
 
 if __name__ == "__main__":
     #user_input = input
-    #
-    # try:
-    #     game = Game(HumanPalyer(), RockPlayer())
-    #     game.play_game()
-    # except Exception as e:
-    #     print(f"An error occured: {e}")
-    #
-    # try:
-    #     game = Game(HumanPalyer(), RandomPlayer())
-    #     game.play_game()
-    # except Exception as e:
-    #     print(f"An error occured: {e}")
+
+    try:
+        game = Game(HumanPalyer(), RockPlayer())
+        game.play_game()
+    except Exception as e:
+        print(f"An error occured: {e}")
+
+    try:
+        game = Game(HumanPalyer(), RandomPlayer())
+        game.play_game()
+    except Exception as e:
+        print(f"An error occured: {e}")
 
     try:
         game = Game(HumanPalyer(), ReflectPlayer())
         game.play_game()
     except Exception as e:
         print(f"An error occured: {e}")
-    #
-    # try:
-    #     #user_input = input
-    #     game = Game(HumanPalyer(), CyclePlayer())
-    #     game.play_game()
-    # except Exception as e:
-    #     print(f"An error occured: {e}")
-    #
-    #
-    #
+
+    try:
+        #user_input = input
+        game = Game(HumanPalyer(), CyclePlayer())
+        game.play_game()
+    except Exception as e:
+        print(f"An error occured: {e}")
+
+
+
