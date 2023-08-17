@@ -9,7 +9,7 @@ in this game"""
 
 class Player():
     """
-    Base class for all the palyers in the game.
+    Base class for all the players in the game.
     """
 
     def __init__(self):
@@ -39,7 +39,7 @@ class RandomPlayer(Player):
         """
         return random.choice(moves)
 
-class HumanPalyer(Player):
+class HumanPlayer(Player):
     """
     It represents a human player who enter the moves from user input.
     """
@@ -82,9 +82,10 @@ class CyclePlayer(Player):
 
 
 class Game():
+    # noinspection GrazieInspection
     """
-    It describe the rock, paper, scissors game.
-    """
+        It describes the rock, paper, scissors game.
+        """
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
@@ -103,7 +104,7 @@ class Game():
             print("\033[91mPlayer 2 wins the round\033[0m")  # Red color for winner
         else:
             print("It's a tie")
-            # Call the learn method on each player to inform them about the opponent's move
+        # Call  the learn method on each player to inform them about the opponent's move
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
@@ -124,51 +125,52 @@ class Game():
         """
         Play the full game.
         """
-    def __init__(self):
+
 
         self.rounds = 3
 
         print("Game Start")
-        for round in range(rounds):
+        for round in range(self.rounds):
             print(f"Round {round +1}")
             self.play_round()
-
+        print("\033[91m______________*****************______________\033[0m")
+        print("\033[91mGame is Finished\033[0m")
         if self.score_player1 > self.score_player2:
-            print("Player one win the game")
+            print("\033[91mPlayer one wins the Game\033[0m")  # Red color for winner
         elif self.score_player2 > self.score_player1:
-            print("Player two win the game")
+            print("\033[91mPlayer two wins the Game\033[0m")  # Red color for winner
         else:
             print("Its a tie!!!")
-        print("Game is Finished")
+
 
 
 if __name__ == "__main__":
     #user_input = input
 
     try:
-        game = Game(HumanPalyer(), RockPlayer())
+        game = Game(HumanPlayer(), RockPlayer())
         game.play_game()
     except Exception as e:
-        print(f"An error occured: {e}")
+        print(f"An error occur: {e}")
 
     try:
-        game = Game(HumanPalyer(), RandomPlayer())
+        game = Game(HumanPlayer(), RandomPlayer())
         game.play_game()
     except Exception as e:
-        print(f"An error occured: {e}")
+        print(f"An error occur: {e}")
 
     try:
-        game = Game(HumanPalyer(), ReflectPlayer())
+        game = Game(HumanPlayer(), ReflectPlayer())
         game.play_game()
     except Exception as e:
-        print(f"An error occured: {e}")
+        print(f"An error occur: {e}")
 
     try:
-        #user_input = input
-        game = Game(HumanPalyer(), CyclePlayer())
+
+        game = Game(HumanPlayer(), CyclePlayer())
         game.play_game()
     except Exception as e:
-        print(f"An error occured: {e}")
+        print(f"An error occur: {e}")
 
 
 
