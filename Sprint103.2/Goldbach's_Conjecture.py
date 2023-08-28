@@ -12,7 +12,7 @@ def detect_formula_errors():
         workbook = openpyxl.load_workbook(filepath)
 
         # Get the active sheet
-        sheet = workbook.active
+        sheet = workbook._active
 
         # Iterate over each cell in the sheet
         for row in sheet.iter_rows():

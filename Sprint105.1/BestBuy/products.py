@@ -14,15 +14,14 @@ class Product:
         """
         if not name:
             raise ValueError("Name cannot be empty")
-        if price < 0:
+        if price <= 0:
             raise ValueError("Name cannot be negative")
         if quantity < 0:
             raise ValueError("Name cannot be negative")
-
-        self.name = name
-        self.price = price
-        self.quantity = quantity
-        self.active = True
+        self._name = name
+        self._price = price
+        self._quantity = quantity
+        self._active = True
 
     def get_quantity(self) -> float:
         """
@@ -32,7 +31,7 @@ class Product:
              float: The quantity of the product as a float.
         """
 
-        return float(self.quantity)
+        return float(self._quantity)
 
 
     def set_quantity(self, quantity: int):
@@ -43,37 +42,38 @@ class Product:
             quantity (int): The new quantity of the product.
 
         """
-        self.quantity = quantity
+        self._quantity = quantity
         if quantity == 0:
-            self.active = False
+            self._active = False
 
     def is_active(self) -> bool:
         """
         Getter function for isActive.
 
         Returns:
-            Returns True if the product is active, otherwise False.
+            Returns True if the product is active (quantity > 0), otherwise False.
 
         """
-        return self.active
+        return self._active and self._quantity > 0
 
     def activate(self):
         """
         Activate the products
         """
-        self.active = True
+        self._active = True
 
     def deactivate(self):
         """
         Deactivate the product
         """
-        self.active = False
+        self._active = False
 
     def show(self) -> str:
         """
         Returns a string that representations the product.
         """
-        return f"{self.name} - Price:{self.price}, Quantity: {self.quantity}"
+        return f"Product(name={self._name},price={self._price}, quantity={self._quantity})"
+
 
     def buy(self, quantity) -> float:
         """
@@ -89,29 +89,29 @@ class Product:
             ValueError Exception if the amount of the product not available
 
         """
-        if quantity > self.quantity:
+        if quantity > self._quantity:
             raise ValueError("The provided amount is not available")
-        if not self.active:
+        if not self._active:
             raise ValueError("The product is not active")
-        total_price = quantity * self.price
-        self.quantity -= quantity
+        total_price = quantity * self._price
+        self._quantity -= quantity
         return total_price
 
 
 if __name__ == "__main__":
 
-    bose1 = Product(name="Bose QuietComfort Earbuds", price=250, quantity=500)
-    mac1 = Product(name="MacBook Air M2", price=1450, quantity=100)
+    bose = Product(name="Bose QuietComfort Earbuds", price=250, quantity=500)
+    mac = Product(name="MacBook Air M2", price=1450, quantity=100)
 
-    print(bose1.buy(50))
-    print(mac1.buy(100))
-    print(mac1.is_active())
+    print(bose.buy(50))
+    print(mac.buy(100))
+    print(mac.is_active())
 
-    print(bose1.show())
-    print(mac1.show())
+    print(bose.show())
+    print(mac.show())
 
-    print(bose1.set_quantity(1000))
-    print(bose1.show())
+    print(bose.set_quantity(1000))
+    print(bose.show())
 
 
 

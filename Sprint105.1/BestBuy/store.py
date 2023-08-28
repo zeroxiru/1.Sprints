@@ -1,12 +1,12 @@
 import products as products
 
-from products import Product
+#from products import Product
 
 class Store:
     """
             Represents the store class that contains a list of products.
      """
-    def __init__(self, products=[]):
+    def __init__(self, products =[]):
 
         """
         Initializes a store instances with a list of products.
@@ -14,7 +14,7 @@ class Store:
         Args:
             products (list, optional): List of Product instances. Defaults to an empty list.
         """
-        self.products = products
+        self._products = products
 
     def add_product(self, new_product):
         """
@@ -23,11 +23,10 @@ class Store:
         Args:
            A product instances will be added into the list of store.
         """
-        if new_product in self.products:
-            self.products.append(new_product)
+        if new_product in self._products:
+            self._products.append(new_product)
         else:
             raise ValueError("Product not found in the store.")
-
 
     def remove_product(self, rem_product):
         """
@@ -37,8 +36,8 @@ class Store:
            A product instances will be removed from the list of store.
 
         """
-        if rem_product in self.products:
-            self.products.remove(rem_product)
+        if rem_product in self._products:
+            self._products.remove(rem_product)
         else:
             raise ValueError("Product not found in the store.")
 
@@ -51,10 +50,10 @@ class Store:
             It returns how many items it the store in total.
 
         """
-        total_quantity = sum(product.quantity for product in self.products)
+        total_quantity = sum(product._quantity for product in self._products)
         return total_quantity
 
-    def get_all_products(self) -> list[Product]:
+    def get_all_products(self) -> list[products.Product]:
         """
          Returns a list of all active products in the store.
 
@@ -66,8 +65,11 @@ class Store:
         #     if item_product.is_active():
         #         active_product.append(item_product)
         # return active_product
-        active_products = [product for product in self.products if product.is_active()]
+        active_products = [product for product in self._products if product.is_active()]
+
         return active_products
+
+
 
 
     def  order(self, shopping_list) -> float:
@@ -82,78 +84,35 @@ class Store:
         """
         total_price = 0.0
         for product, quantity in shopping_list:
-            if product in self.products and product.is_active():
-                if product.quantity >= quantity:
+            if product in self._products and product.is_active():
+                if product._quantity >= quantity:
                     total_price += product.buy(quantity)
                 else:
-                    raise ValueError(f"Insufficient quantity for {product.name}")
+                    raise ValueError(f"Insufficient quantity for {product._name}")
+                    product.deactivate()
             else:
-                raise ValueError(f"Product {product.name} is not available or not active")
+                raise ValueError(f"Product {product._name} is not available or not active")
         return total_price
 
 
+
 if __name__ == "__main__":
-
-    # product_list = [Product(name="MacBook Air M2", price=1450, quantity=100),
-    #                 Product(name="Bose QuietComfort Earbuds", price=250, quantity=500),
-    #                 Product(name="Google Pixel 7", price=500, quantity=250),
-    #                 ]
+    # bose = products.Product("Bose QuietComfort Earbuds", price=250, quantity=500)
+    # mac = products.Product("MacBook Air M2", price=1450, quantity=100)
     #
-    # store = Store(product_list)
-    # products = store.get_all_products()
-    # print(store.get_total_quantity())
-    # print(store.order([(products[0], 1), (products[1], 2)]))
+    # store = Store([bose, mac])
+    # price = store.order([(bose, 5), (mac, 30), (bose, 10)])
+    # print(f"Order cost: {price} dollars.")
 
-    bose = Product(name="Bose QuietComfort Earbuds", price=250, quantity=500)
-    mac = Product(name="MacBook Air M2", price=1450, quantity=100)
-    store = Store([bose, mac])
-    price = store.order([(bose, 5), (mac, 30), (bose, 10)])
-    print(f"Order cost: {price} dollars.")
+    product_list = [products.Product("MacBook Air M2", price=1450, quantity=100),
+                    products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+                    products.Product("Google Pixel 7", price=500, quantity=250),
+                    ]
 
-
-
-
-#     # Creating some Product instances
-#     bose = Product(name="Bose QuietComfort Earbuds", price=250, quantity=500)
-#     mac = Product(name="MacBook Air M2", price=1450, quantity=100)
-#
-#     # Creating a Store instance with initial products
-#     store = Store([bose, mac])
-#
-#     # Creating a new Product instance
-#     pixel = Product("Google Pixel 7", price=500, quantity=250)
-#
-#     # Adding the new product to the store
-#     store.add_product(pixel)
-#
-#     # Printing the products in the store before removal
-#     for product in store.products:
-#         print(product.name)
-#
-#     # Output:
-#     # Bose QuietComfort Earbuds
-#     # MacBook Air M2
-#     # Google Pixel 7
-#
-#     # Removing a product from the store
-#     store.remove_product(mac)
-#
-#     # Printing the products in the store after removal
-#     for product in store.products:
-#         print(product.name)
-#
-#     # Output:
-#     # Bose QuietComfort Earbuds
-#     # Google Pixel 7
-#     print(store.get_total_quantity())
-#     # Creating a Store instance with initial products
-#     store = Product([bose, mac, pixel])
-#     print((store.get_all_products()))
-#     # Creating a shopping list
-#     shopping_list = [(bose, 2), (pixel, 3)]
-#     # Placing an order
-#     total_order_price = store.order(shopping_list)
-#
-#     print(f"Total order price: ${total_order_price:.2f}")
+    store = Store(product_list)
+    products = store.get_all_products()
 
 
+    print(store.get_total_quantity())
+    #print(store.show())
+    #print(store.order([(products[0], 1000), (products[2], 20)]))
