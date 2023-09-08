@@ -4,7 +4,7 @@
 def second_occurance(lst_items, item):
     first_found = False
     index_found = None
-    for i in range(1,len(lst_items)):
+    for i in range(1, len(lst_items)):
         if lst_items[i] == item:
             if first_found:
                 index_found = i
