@@ -7,7 +7,8 @@ for line in text.split("\n"):
     phone_num = line.strip().split(": ")[1]
     print(phone_num)
 
+for line in text.split("\n"):
+    phone_num = line.strip().split(":")[1]
+    print(phone_num)
 
-print_even_numbers(lst)
-
-print_even_numbers()
+#
