@@ -49,6 +49,9 @@ class StorageJson(IStorage):
             self.save_data()
             print(f"{title} movie has added into the database")
         else:
+            print(
+                f"A movie with title: {title}, rating: {rating}, and year: " \
+                f"{year} already exists in the movies database.")
 
 
 
