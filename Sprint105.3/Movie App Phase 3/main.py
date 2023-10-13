@@ -46,21 +46,50 @@ def main():
     else:
         print("######## Movie Database ########")
         storage_option = int(input("Enter the number 1 to choose JSON and 2 for CSV file format: "))
+        if storage_option not in (1, 2):
+            print("Invalid choice. Please enter 1 for JSON or 2 for CSV.")
+            return
+
+        # determine Storage type depending on the choice.
+
         if storage_option == 1:
-            storage = StorageJson('movies_list.json')
+            storage_type = "JSON"
         elif storage_option == 2:
-            storage = StorageCsv('movies_list.csv')
+            storage_type = "CSV"
         else:
             print("Invalid choice. Please enter 1 for JSON or 2 for CSV.")
             return
 
+    # Ask for the family member's name (e.g., sara, john, jack)
+    family_member_name = input("Enter the family member's name (sara,john, jack): ")
+
+    # Construct the storage file name based on the family member's name
+    Storage_file_name = f"{family_member_name.lower()}.json"
+
+    # Initialize the storage based on the selected format and the family member's name
+    if storage_type == "JSON":
+        storage = StorageJson(Storage_file_name, family_member_name)
+    else:
+        storage = StorageCsv(Storage_file_name, family_member_name)
+    print(f"You are now working on {storage_type} file format for {family_member_name}'s storage.")
+
+
+
+    # Create the MovieApp instance with the family storage
     movie_app = MovieApp(storage)
+     # Create separate storage instances for John, Sara, and Jack
+    family_storage = {
+        'John': StorageJson('john.json', 'John'),
+        'Sara': StorageJson('sara.json', 'Sara'),
+        'Jack': StorageJson('jack.json', 'Jack'),
+    }
+    movie_app._family_storage = family_storage
+
+    for family_member_name, storage_instance in family_storage.items():
+        storage_instance._command_movie_stats(movie_app)
+
     movie_app.run()
 
 if __name__ == "__main__":
     main()
 
-
-if __name__ == "__main__":
-
-    main()

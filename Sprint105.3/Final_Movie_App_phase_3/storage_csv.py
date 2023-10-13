@@ -1,60 +1,65 @@
+import csv
 from istorage import IStorage
-import json
-import statistics
 
-
-class StorageJson(IStorage):
-    def __init__(self, file_path, family_member_name="default"):
+class StorageCsv(IStorage):
+    def __init__(self, file_path):
         self._file_path = file_path
         self._movies_data = self.load_movies_data()
-        self._family_member_name = family_member_name
-        #self._family_member_movies = []
-
 
     def load_movies_data(self):
         """
-                   Loads the JSON data from a file.
+        Loads the CSV data from a file.
 
-                   Args:
-                       file_path (str): The path to the JSON file.
+        Returns:
+            dict: The loaded CSV data as a dictionary of dictionaries.
+        """
+        movies_data = {}
+        with open(self._file_path, mode='r', newline='') as file_obj:
+            reader = csv.DictReader(file_obj)
+            for row in reader:
+                movie_title = row['title']
+                movie_info = {
+                    'rating': float(row['rating']),
+                    'year': int(row['year']),
+                    'poster': row['poster']
 
-                   Returns:
-                       dict: The loaded JSON data as a dictionary of dictionaries.
-                   """
-        #json_file = f"{self._family_member_name.lower()}.json"
-        with open(self._file_path, "r") as file_obj:
-            return json.load(file_obj)
+                }
+                movies_data[movie_title] = movie_info
+        return movies_data
 
     def save_data(self, data):
         """
-            Saves the data to a JSON file.
-            """
-        movie_info_to_save = {movie: info for movie, info in data.items()}
-        with open(self._file_path, "w") as file_obj:
-            json.dump(movie_info_to_save, file_obj, indent=4)
+        Saves the data to a CSV file.
 
+        Args:
+            data (dict): The data to be saved.
+        """
+        with open(self._file_path, mode='w', newline='') as file_obj:
+            fieldnames = ['title', 'rating', 'year', 'poster']
+            writer = csv.DictWriter(file_obj, fieldnames=fieldnames)
+            writer.writeheader()
+            for movie, info in data.items():
+                writer.writerow({'title': movie, 'rating': info['rating'], 'year': info['year'], 'poster': info['poster']})
 
     def list_movies(self):
         """
-            Lists the movies in the database along with their ratings and release years.
+          Lists the movies in the database along with their ratings and release years.
 
-            This function retrieves the movie data from the database and returns it as a dictionary.
-            If there are no movies in the database, it returns an empty dictionary.
+          This function retrieves the movie data from the database and prints the information for each movie.
+          If there are no movies in the database, it displays a message indicating the absence of movies.
 
-            Returns:
-                dict: A dictionary containing movie titles as keys and their information as values.
-            """
-
+          Returns:
+          None
+          """
         if self._movies_data:
             print("List of Movies")
             for movie, info in self._movies_data.items():
                 print(f'Movie Title: {movie}')
                 print(f"Movie Rating: {info['rating']}")
                 print(f"Movie Year: {info['year']}")
-                print(f"Movie Year: {info['poster']}")
+                print(f"Movie Poster: {info['poster']}")
         else:
             print("No available movies in the database.")
-
 
     def add_movie(self, title, year, rating, poster):
         """
@@ -72,7 +77,7 @@ class StorageJson(IStorage):
             Returns:
             None
             """
-        if(title, year, rating) not in self._movies_data:
+        if title not in self._movies_data:
             self._movies_data[title] = {
                 'year': year,
                 'rating': rating,
@@ -82,8 +87,9 @@ class StorageJson(IStorage):
             print(f"{title} movie has added into the database")
         else:
             print(
-                f"A movie with title: {title}, rating: {rating}, and year: " \
-                f"{year} already exists in the movies database.")
+                f"A movie with title: {title}, rating: {rating},  year: " \
+                f"{year} and poster: {poster} already exists in the movies database.")
+
 
     def delete_movie(self, title):
         """
@@ -130,5 +136,4 @@ class StorageJson(IStorage):
             print(f"{title} was not found in the movie database.")
 
 
-
-
+   # def list_movies(self):

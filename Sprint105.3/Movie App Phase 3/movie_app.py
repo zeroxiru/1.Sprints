@@ -1,18 +1,19 @@
-from storage_json import StorageJson
-
+from statistics import median
 
 class MovieApp:
     def __init__(self, storage):
         self._storage = storage
 
     def _command_list_movies(self):
-        movies = self._storage.list_movies()
+        self._storage.list_movies()
 
-    def _command_movie_stats(self):
-        pass
 
-    def _generate_website(self):
-        pass
+    def _command_movie_stats(self, storage):
+        """
+        Displays statistics about the movies in the database.
+        """
+        movies_data = self._storage.load_movies_data()
+        ratings =
 
 
     def menu(self):
@@ -46,25 +47,29 @@ class MovieApp:
             command (int): The user's choice of command (0-9).
         """
         if command == 1:
-            self._storage.list_movies()
+            # for member_name, storage in self._family_storage.items():
+            #     print(f"{member_name}'s Movie List")
+            self._command_list_movies()
+
         elif command == 2:
             # Get movie details from the user
             movie_title = input("Insert a name of the movie into the list:")
             movie_rating = float(input(" Provide a rating for the given movie:"))
             movie_year = int(input("Enter the year of the movie: "))
-            self._storage.add_movie(movie_title, movie_year, movie_rating)
+            movie_poster = input("Insert the poster url location to see the images of the movie")
+            self._family_storage.add_movie(movie_title, movie_year, movie_rating, movie_poster)
         elif command == 3:
             # Get movies name from the title given by user input
             movie = input("Type the movie name to delete from the database:")
-            self._storage.delete_movie(movie)
+            self._family_storage.delete_movie(movie)
         elif command == 4:
             # Get movie details from the user
             movie_title = input("Name of the movie into the list to update:")
-            self._storage.show_single_movie_info(movie_title)
+            self._family_storage.show_single_movie_info(movie_title)
             movie_rating = float(input(" Provide a new rating for the given movie:"))
-            self._storage.update_movie(movie_title, movie_rating)
+            self._family_storage.update_movie(movie_title, movie_rating)
         elif command == 5:
-            self.show_stats()
+            self._family_storage._command_movie_stats()
         elif command == 6:
             self.random_movie()
         elif command == 7:
