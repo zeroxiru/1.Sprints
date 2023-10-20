@@ -1,0 +1,24 @@
+    <ul>
+        {% for user, details in users.items() %}
+        <li>
+            {% if details['country'] == 'USA'%}
+
+                {{user}} is {{details['age']}} years old from {{details['country']}}. Special message for USA users: Welcome!
+            {% else %}
+                {{user}} is {{details['age']}} years old from {{details['country']}}.
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+
+
+    <ul>
+    {% for user, details in users.items() %}
+    <li>
+        {{ user }} is {{ details['age'] }} years old from {{ details['country'] }}.
+        {% if user == 'Alice' %}
+            Special message for Alice: Welcome!
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>

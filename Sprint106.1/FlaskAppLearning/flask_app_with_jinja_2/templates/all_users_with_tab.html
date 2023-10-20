@@ -1,0 +1,27 @@
+<DOCTYPE html>
+    <html>
+    <head>
+        <title> All Users</title>
+    </head>
+    <body>
+    <h1>ll users information</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Country</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user, details in users.items()%}
+        <tr>
+            <td>{{user}}</td>
+            <td>{{details['age']}}</td>
+            <td>{{details['country']}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </body>
+    </html>
