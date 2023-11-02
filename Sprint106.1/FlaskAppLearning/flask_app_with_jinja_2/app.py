@@ -12,8 +12,8 @@ users = {
 def index():
     return render_template('index.html', users=users)
 
-@app.route('/all-users')
-def all_ausers():
+@app.route('/all_users')
+def all_users():
     return render_template('all_users_with_tab.html', users=users)
 
 @app.route('/update_country', methods=['GET', 'POST'])
@@ -28,17 +28,8 @@ def update_country():
         if name in users:
             users[name]['country'] = new_country
 
-        return redirect(url_for('all-users'))
-        # Get the updated country from the form
-        update_country = request.form['country']
+        return redirect(url_for('all_users'))
 
-        # # Update the 'country' attribute while keeping the rest unchanged
-        # users['country'] = update_country
-        #
-        # #Return a response, render a template, or redirect as needed
-        # return f'Updated country to: {update_country}'
-
-        #render_template('.html', users)
     return render_template('update_users.html')
 
 if __name__ == "__main__":
