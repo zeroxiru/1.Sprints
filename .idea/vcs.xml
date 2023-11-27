@@ -2,11 +2,14 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ERP_NEXT" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Sprint105.2/Best_Buy_2" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Sprint105.2/bestbuy" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Sprint105.2/save_best_buy_v1/bestbuy" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Sprint106.1/masterblog" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Sprint106.1/masterblog/masterblog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Sprint106.2/master_blog_api" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Sprint106.2/master_blog_api/masterblog-api" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Sprint106.3/106.3_kick_off/Exercise_01" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Sprint106.3/MovieWeb_App" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Sprint106.3/MovieWeb_App/MovieWeb_App" vcs="Git" />
